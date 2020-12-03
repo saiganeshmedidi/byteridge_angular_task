@@ -1,13 +1,110 @@
 <h1>Hi {{currentUser.firstName}}!</h1>
-<p>You're logged in with Angular 8!!</p>
 <h3>All login audit :</h3>
-<ul>
-    <li *ngFor="let audit of audits">
-        <br/><span class="badge badge-primary">{{audit.user}}</span>
-        <br/><span class="badge badge-secondary">{{audit._id}}</span>
-        <br/>Login - {{audit.loginTime}}
-        <br/>Logout - {{audit.logoutTime}}
-        <br/>IP - {{audit.ip}}
-    </li>
 
-</ul>
+<section class="mt-3">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-8">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Search</span>
+                </div>
+                <input type="text" class="form-control" placeholder="Search By ID" aria-label="Username"
+                    aria-describedby="basic-addon1" (keyup)="onSearchAudits($event)">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <select name="type" class="form-control" id="type" [(ngModel)]="hoursFormat">
+                <option value="12">12 Hours</option>
+                <option value="24">24 Hours</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-8">
+            <select name="sor_by_type" class="form-control" id="type" [(ngModel)]="sortByType"
+                (change)="onChangeSortOrder()">
+                <option value="ID">Sort By - Id</option>
+                <option value="USER">Sort By - User</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="type" class="form-control" id="type" [(ngModel)]="sortOrder" (change)="onChangeSortOrder()">
+                <option value="ASC">ASC</option>
+                <option value="DESC">DESC</option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="row mt-3">
+
+        <div class="col-md-12">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>S.No</th>
+                        <th>User</th>
+                        <th>Id</th>
+                        <th>Login</th>
+                        <th>Logout</th>
+                        <th>IP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let audit of audits; let i = index;">
+                        <ng-container
+                            *ngIf="( i < (paginationSettings.pageNumber * 5) + 5 && (i > (paginationSettings.pageNumber - 1) * 5 + 4 || paginationSettings.pageNumber == 0) )">
+                            <td>{{ i+1 }}</td>
+                            <td>{{audit.user}}</td>
+                            <td>{{audit.id}}</td>
+                            <td *ngIf="hoursFormat == '24'">
+                                {{audit.loginTime | date : 'dd/MM/yyyy HH:mm:ss'}}</td>
+                            <td *ngIf="hoursFormat == '12'">
+                                {{audit.loginTime | date : 'dd/MM/yyyy hh:mm:ss a'}}</td>
+                            <td *ngIf="hoursFormat == '24'">
+                                {{audit.logoutTime | date : 'dd/MM/yyyy HH:mm:ss'}}</td>
+                            <td *ngIf="hoursFormat == '12'">
+                                {{audit.logoutTime | date : 'dd/MM/yyyy hh:mm:ss a'}}</td>
+                            <td>
+                                {{audit.ip}}
+                            </td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item" (click)="getFirstPage()"><a class="page-link">
+                    <span aria-hidden="true">First</span>
+                </a></li>
+
+            <li class="page-item" (click)="getPreviousPage()"><a class="page-link">
+                    <span aria-hidden="true">&laquo;</span>
+                </a></li>
+
+            <ng-container *ngFor="let page of paginationSettings.pages; let i = index;">
+                <li class="mt-2" (click)="getCurrentPage(page - 1)">
+                    <a class="p-2">{{page}}</a>
+                </li>
+            </ng-container>
+
+            <li class="page-item" (click)="getNextPage()"><a class="page-link">
+                    <span aria-hidden="true">&raquo;</span>
+                </a></li>
+            <li class="page-item" (click)="getLastPage()"><a class="page-link">
+                    <span aria-hidden="true">Last</span>
+                </a></li>
+        </ul>
+    </nav>
+
+
+</section>
