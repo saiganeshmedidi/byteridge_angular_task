@@ -10,6 +10,7 @@ export class AuditComponent implements OnInit {
     originalAudits: any[] = []
     currentUser: User = null;
 
+    // For Sorting
     sortByType: any = 'ID';
     sortOrder: any = 'ASC';
 
