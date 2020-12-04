@@ -106,30 +106,30 @@ export class AuditComponent implements OnInit {
         }
     }
 
-    /** Get pagination based on page number */
+    // Get Current Page audits
     getCurrentPage(pageNumber) {
         this.paginationSettings.pageNumber = pageNumber;
     }
 
-    /** Get previous page users */
+    // Get Previous page audits
     getPreviousPage() {
         this.paginationSettings.pageNumber -= 1;
         this.setPagination();
     }
 
-    /** Get next page users */
+    // Get Next Page audits
     getNextPage() {
         this.paginationSettings.pageNumber += 1;
         this.setPagination();
     }
 
-    /** Get the very first page users */
+    // Get First Page audits
     getFirstPage() {
         this.paginationSettings.pageNumber = 0;
         this.setPagination();
     }
 
-    /** Get the very last page users */
+    // Get last page audits
     getLastPage() {
         this.paginationSettings.pageNumber = this.paginationSettings.totalPages - 1;
         this.setPagination();
